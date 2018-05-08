@@ -1,18 +1,11 @@
 import React from "react"
 import Ticker from "./Ticker"
+import TimeToggler from "./time-toggler"
 
 const styles = {
   textRancho: { fontFamily: "'Rancho', cursive" },
   textGochi: { fontFamily: "'Gochi Hand', cursive" },
   titleText: { fontSize: "5em", textAlign: "center", margin: "10px 0 0 0" },
-  noSelect: {
-    WebkitTouchCallout: "none",
-    WebkitUserSelect: "none",
-    khtmlUserSelect: "none",
-    MozUserSelect: "none",
-    msUserSelect: "none",
-    userSelect: "none",
-  },
 }
 
 export default class Clock extends React.Component {
@@ -30,9 +23,10 @@ export default class Clock extends React.Component {
   audio = new Audio("https://s3.amazonaws.com/freecodecamp/simonSound2.mp3")
 
   componentDidMount() {
+    const intervalTime = 500
     this.intervalId = setInterval(() => {
       if (!this.state.paused) {
-        if (this.state.time - 500 <= 0) {
+        if (this.state.time - intervalTime <= 0) {
           // time has run out
           this.playSound()
           this.setState(currentState => {
@@ -54,10 +48,11 @@ export default class Clock extends React.Component {
             }
           })
         } else {
-          this.setState(({ time }) => ({ time: time - 500 }))
+          // decrement time
+          this.setState(({ time }) => ({ time: time - intervalTime }))
         }
       }
-    }, 500)
+    }, intervalTime)
   }
 
   componentWillUnmount() {
@@ -126,26 +121,16 @@ export default class Clock extends React.Component {
             fontSize: "2em",
           }}
         >
-          <div style={styles.noSelect}>
-            <h3 style={{ margin: 0, padding: "5px 13px 0 0" }}>Break Length</h3>
-            <div style={{ lineHeight: "1em", fontSize: "2em" }}>
-              <span onClick={() => this.changeBreakLength(-1)}>−</span>
-              <span style={{ margin: "0 7px" }}>{this.state.breakLength}</span>
-              <span onClick={() => this.changeBreakLength(1)}>+</span>
-            </div>
-          </div>
-          <div style={styles.noSelect}>
-            <h3 style={{ margin: 0, padding: "5px 0 0 13px" }}>
-              Session Length
-            </h3>
-            <div style={{ lineHeight: "1em", fontSize: "2em" }}>
-              <span onClick={() => this.changeSessionLength(-1)}>−</span>
-              <span style={{ margin: "0 7px" }}>
-                {this.state.sessionLength}
-              </span>
-              <span onClick={() => this.changeSessionLength(1)}>+</span>
-            </div>
-          </div>
+          <TimeToggler
+            title="Break Length"
+            time={this.state.breakLength}
+            changeTime={this.changeBreakLength}
+          />
+          <TimeToggler
+            title="Session Length"
+            time={this.state.sessionLength}
+            changeTime={this.changeSessionLength}
+          />
         </div>
         <Ticker
           clickHandler={this.startPause}
