@@ -20,7 +20,7 @@ export default class Clock extends React.Component {
   }
   state = this.defaultState
 
-  audio = new Audio("https://s3.amazonaws.com/freecodecamp/simonSound2.mp3")
+  audio = new Audio("assets/alert.mp3")
 
   componentDidMount() {
     const intervalTime = 500
@@ -87,13 +87,7 @@ export default class Clock extends React.Component {
 
   reset = () => this.setState(this.defaultState)
 
-  playSound = () => {
-    this.audio.play()
-    setTimeout(() => this.audio.play(), 500)
-    setTimeout(() => this.audio.play(), 1000)
-    setTimeout(() => this.audio.play(), 1500)
-    setTimeout(() => this.audio.play(), 2000)
-  }
+  playSound = () => this.audio.play()
 
   calculateRadians = () => {
     const { inSession, time, breakLength, sessionLength } = this.state
