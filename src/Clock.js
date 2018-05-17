@@ -20,7 +20,7 @@ export default class Clock extends React.Component {
   }
   state = this.defaultState
 
-  audio = new Audio("assets/alert.mp3")
+  audio = new Audio("/assets/alert.mp3")
 
   componentDidMount() {
     const intervalTime = 500
