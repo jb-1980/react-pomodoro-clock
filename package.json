@@ -9,9 +9,9 @@
     "url": "https://github.com/jb-1980/react-pomodo-clock"
   },
   "dependencies": {
-    "react": "16.3.2",
-    "react-dom": "16.3.2",
-    "react-scripts": "1.1.4"
+    "react": "16.13.1",
+    "react-dom": "16.13.1",
+    "react-scripts": "3.4.1"
   },
   "devDependencies": {},
   "scripts": {
