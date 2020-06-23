@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React from "react"
 import Ticker from "./Ticker"
 import TimeToggler from "./time-toggler"
 
@@ -18,9 +18,18 @@ const defaultState = {
 
 const getDefaultState = () => {
   const storedState = localStorage.getItem("react-pomodo-clock-state")
-  return storedState
-    ? { ...defaultState, ...JSON.parse(storedState) }
-    : defaultState
+  if (!storedState) {
+    return defaultState
+  }
+
+  let { breakLength, sessionLength } = JSON.parse(storedState)
+
+  return {
+    ...defaultState,
+    breakLength,
+    sessionLength,
+    time: sessionLength * 60000,
+  }
 }
 
 const storeState = state => {
