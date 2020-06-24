@@ -32,7 +32,7 @@ const getDefaultState = () => {
   }
 }
 
-const storeState = state => {
+const storeState = (state) => {
   let { breakLength, sessionLength } = state
   localStorage.setItem(
     "react-pomodo-clock-state",
@@ -164,12 +164,14 @@ export const Clock = () => {
         <TimeToggler
           title="Break Length"
           time={breakLength}
-          changeTime={value => dispatch({ type: "CHANGE_BREAK_LENGTH", value })}
+          changeTime={(value) =>
+            dispatch({ type: "CHANGE_BREAK_LENGTH", value })
+          }
         />
         <TimeToggler
           title="Session Length"
           time={sessionLength}
-          changeTime={value =>
+          changeTime={(value) =>
             dispatch({ type: "CHANGE_SESSION_LENGTH", value })
           }
         />

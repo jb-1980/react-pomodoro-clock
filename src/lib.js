@@ -31,7 +31,7 @@ export const pad = (num, size) => {
   return s.substr(s.length - size)
 }
 
-export const formatTime = time => {
+export const formatTime = (time) => {
   // get the number of minutes from our milliseconds
   const m = Math.floor(time / (60 * 1000))
 

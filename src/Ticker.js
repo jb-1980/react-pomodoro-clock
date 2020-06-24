@@ -34,6 +34,7 @@ export default ({ radians, inSession, time, clickHandler }) => {
           fontSize="4em"
           textAnchor="middle"
           fill="white"
+          data-testid="ticker-label"
         >
           {inSession ? "Session" : "Break"}
         </text>
