@@ -148,7 +148,7 @@ export const Clock = () => {
   return (
     <section>
       <h1 style={{ ...styles.textRancho, ...styles.titleText }}>
-        Pomodo Clock
+        Pomodoro Clock
       </h1>
       <h2 style={{ ...styles.textGochi, textAlign: "center", marginTop: 0 }}>
         by Gilgen Labs
