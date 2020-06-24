@@ -10,14 +10,14 @@ const styles = {
 }
 
 const App = () => (
-  <React.Fragment>
+  <div>
     <div style={styles}>
       <Clock />
     </div>
     <div style={{ textAlign: "center", color: "white", padding: 10 }}>
-      © Gilgen Labs 2018
+      © Gilgen Labs {new Date().getFullYear()}
     </div>
-  </React.Fragment>
+  </div>
 )
 
 render(<App />, document.getElementById("root"))

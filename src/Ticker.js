@@ -7,7 +7,11 @@ export default ({ radians, inSession, time, clickHandler }) => {
   const angle = inSession ? radians + 0.0000001 : 1.999999 * Math.PI - radians
   const formattedTime = formatTime(time)
   return (
-    <div style={{ textAlign: "center" }} onClick={clickHandler}>
+    <div
+      style={{ textAlign: "center" }}
+      onClick={clickHandler}
+      data-testid="ticker"
+    >
       <svg width="350" height="350" xmlns="http://www.w3.org/2000/svg">
         <path
           d={parametizeArc(175, 175, 165, 0, angle)}
@@ -40,6 +44,7 @@ export default ({ radians, inSession, time, clickHandler }) => {
           fontSize="4em"
           textAnchor="middle"
           fill="white"
+          data-testid="ticker-time"
         >
           {formattedTime}
         </text>

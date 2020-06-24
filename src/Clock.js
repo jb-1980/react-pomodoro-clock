@@ -8,7 +8,7 @@ const styles = {
   titleText: { fontSize: "5em", textAlign: "center", margin: "10px 0 0 0" },
 }
 
-const defaultState = {
+export const defaultState = {
   breakLength: 5,
   sessionLength: 25,
   inSession: true,
@@ -40,7 +40,7 @@ const storeState = state => {
   )
 }
 
-const reducer = (state, action) => {
+export const reducer = (state, action) => {
   switch (action.type) {
     case "TOGGLE_SESSION": {
       if (state.inSession) {
