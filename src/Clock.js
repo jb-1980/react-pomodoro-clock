@@ -72,7 +72,10 @@ export const reducer = (state, action) => {
     case "TOGGLE_CLOCK_STATE": {
       switch (state.clockState) {
         case POMODORO: {
-          if (state.cycle % state.longBreakCycles === 0) {
+          if (
+            state.includeLongBreaks &&
+            state.cycle % state.longBreakCycles === 0
+          ) {
             return {
               ...state,
               clockState: LONGBREAK,
