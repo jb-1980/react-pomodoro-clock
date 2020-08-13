@@ -193,7 +193,7 @@ export const Clock = () => {
       longBreakCycles,
     },
     dispatch,
-  ] = React.useReducer(reducer, getDefaultState())
+  ] = React.useReducer(reducer, null, getDefaultState)
 
   let [showSettings, setShowSettings] = React.useState(false)
 

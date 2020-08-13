@@ -12,7 +12,6 @@ export default ({
   cycle,
 }) => {
   // noticed that when radians = 0 or 2PI the arc is not rendered, so getting it really close
-  console.log({ radians })
   const angle =
     clockState === "pomodoro"
       ? radians + 0.0000001
@@ -25,7 +24,6 @@ export default ({
     let currentAngle = spaceAngle / 2
     let angleLength = (2 * Math.PI) / longBreakCycles - spaceAngle
     for (let i = 0; i < longBreakCycles; i += 1) {
-      console.log({ currentAngle, angleLength })
       longBreakArcs.push(
         <path
           key={i}
