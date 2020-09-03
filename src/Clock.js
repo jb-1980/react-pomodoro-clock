@@ -15,7 +15,7 @@ export const defaultState = {
   pomodoroLength: 25,
   clockState: POMODORO, // one of "pomodoro", "break", "longBreak"
   paused: true,
-  time: 25 * 60 * 1000, // session time in milliseconds
+  time: 25 * 60 * 1000, // how many milliseconds are left in cycle
   cycle: 1,
   includeLongBreaks: true,
   longBreakLength: 15,
@@ -81,6 +81,7 @@ export const reducer = (state, action) => {
               clockState: LONGBREAK,
               cycle: state.cycle + 1,
               time: state.longBreakLength * 60 * 1000,
+              startTime: Date.now(),
             }
           }
           return {
@@ -88,6 +89,7 @@ export const reducer = (state, action) => {
             clockState: BREAK,
             cycle: state.cycle + 1,
             time: state.breakLength * 60 * 1000,
+            startTime: Date.now(),
           }
         }
         case BREAK:
@@ -95,6 +97,7 @@ export const reducer = (state, action) => {
             ...state,
             clockState: POMODORO,
             time: state.pomodoroLength * 60 * 1000,
+            startTime: Date.now(),
           }
         case LONGBREAK:
           return {
@@ -102,6 +105,7 @@ export const reducer = (state, action) => {
             clockState: POMODORO,
             cycle: 1,
             time: state.pomodoroLength * 60 * 1000,
+            startTime: Date.now(),
           }
         default:
           return state
@@ -109,9 +113,11 @@ export const reducer = (state, action) => {
     }
 
     case "DECREMENT_TIME": {
+      let timeDelta = Date.now() - state.startTime
       return {
         ...state,
-        time: state.time - action.intervalTime,
+        time: state.time - timeDelta,
+        startTime: Date.now(),
       }
     }
 
@@ -146,7 +152,18 @@ export const reducer = (state, action) => {
       return nextState
     }
     case "TOGGLE_PAUSE": {
-      return { ...state, paused: !state.paused }
+      // case initial start
+      if (!state.startTime) {
+        return { ...state, paused: false, startTime: Date.now() }
+      }
+
+      // case switch from pause to play
+      if (state.paused) {
+        return { ...state, paused: false, startTime: Date.now() }
+      }
+
+      // case switch from play to pause
+      return { ...state, paused: true }
     }
     case "TOGGLE_INCLUDE_LONG_BREAKS": {
       let nextState = { ...state, includeLongBreaks: !state.includeLongBreaks }
@@ -201,13 +218,13 @@ export const Clock = () => {
     const intervalTime = 500
     let intervalId = setInterval(() => {
       if (!paused) {
-        if (time - intervalTime <= 0) {
+        if (time <= 0) {
           // time has run out
           audio.play()
           dispatch({ type: "TOGGLE_CLOCK_STATE" })
         } else {
           // decrement time
-          dispatch({ type: "DECREMENT_TIME", intervalTime })
+          dispatch({ type: "DECREMENT_TIME" })
         }
       }
     }, intervalTime)
