@@ -1,6 +1,7 @@
 import React from "react"
 import { render } from "react-dom"
 import { Clock } from "./Clock"
+import * as serviceWorker from "./serviceWorker"
 
 const styles = {
   display: "flex",
@@ -21,3 +22,5 @@ const App = () => (
 )
 
 render(<App />, document.getElementById("root"))
+
+serviceWorker.register()
