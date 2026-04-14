@@ -1,16 +1,21 @@
 // helper function to convert the angle in radians to cartesian coordinates
-export const polarToCartesian = (xCenter = 0, yCenter = 0, radius, angle) => [
+export const polarToCartesian = (
+  xCenter = 0,
+  yCenter = 0,
+  radius: number,
+  angle: number
+): [number, number] => [
   xCenter + radius * Math.sin(angle),
   yCenter - radius * Math.cos(angle),
 ]
 
 // helper function to create the arc path for the svg element
 export const parametizeArc = (
-  xCenter,
-  yCenter,
-  radius = 165,
-  startAngle,
-  endAngle
+  xCenter: number,
+  yCenter: number,
+  radius: number = 165,
+  startAngle: number,
+  endAngle: number
 ) => {
   const start = polarToCartesian(xCenter, yCenter, radius, startAngle)
   const end = polarToCartesian(xCenter, yCenter, radius, endAngle)
@@ -26,12 +31,12 @@ export const parametizeArc = (
       ${end[0]},${end[1]}`
 }
 
-export const pad = (num, size) => {
+export const pad = (num: number, size: number) => {
   const s = "0".repeat(size) + num
   return s.substr(s.length - size)
 }
 
-export const formatTime = (time) => {
+export const formatTime = (time: number) => {
   // get the number of minutes from our milliseconds
   const m = Math.floor(time / (60 * 1000))
 

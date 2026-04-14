@@ -1,8 +1,16 @@
-import React from "react"
+import { parametizeArc, formatTime } from "../utils/lib"
 
-import { parametizeArc, formatTime } from "./lib"
+type TickerProps = {
+  radians: number
+  clockState: string
+  time: number
+  clickHandler: () => void
+  includeLongBreaks: boolean
+  longBreakCycles: number
+  cycle: number
+}
 
-export default ({
+export const Ticker = ({
   radians,
   clockState,
   time,
@@ -10,30 +18,21 @@ export default ({
   includeLongBreaks,
   longBreakCycles,
   cycle,
-}) => {
+}: TickerProps) => {
   // noticed that when radians = 0 or 2PI the arc is not rendered, so getting it really close
-  const angle =
-    clockState === "pomodoro"
-      ? radians + 0.0000001
-      : 1.999999 * Math.PI - radians
+  const angle = clockState === "pomodoro" ? radians + 0.0000001 : 1.999999 * Math.PI - radians
   const formattedTime = formatTime(time)
 
   const longBreakArcs = []
   if (includeLongBreaks) {
-    let spaceAngle = (2.5 * Math.PI) / 180
+    const spaceAngle = (2.5 * Math.PI) / 180
     let currentAngle = spaceAngle / 2
-    let angleLength = (2 * Math.PI) / longBreakCycles - spaceAngle
+    const angleLength = (2 * Math.PI) / longBreakCycles - spaceAngle
     for (let i = 0; i < longBreakCycles; i += 1) {
       longBreakArcs.push(
         <path
           key={i}
-          d={parametizeArc(
-            200,
-            200,
-            175,
-            currentAngle,
-            currentAngle + angleLength
-          )}
+          d={parametizeArc(200, 200, 175, currentAngle, currentAngle + angleLength)}
           stroke={i + 1 >= cycle ? "#333" : "#e4e3e3"}
           strokeWidth="10"
           stroke-cap="butt"
@@ -45,11 +44,7 @@ export default ({
     }
   }
   return (
-    <div
-      style={{ textAlign: "center", width: 400, height: 400 }}
-      onClick={clickHandler}
-      data-testid="ticker"
-    >
+    <div style={{ textAlign: "center", width: 400, height: 400 }} onClick={clickHandler} data-testid="ticker">
       <svg width="400" height="400" xmlns="http://www.w3.org/2000/svg">
         <circle cx="200" cy="200" r="200" fill="#111" fillOpacity="0.5" />
         <path
@@ -75,15 +70,10 @@ export default ({
             fontSize: "4em",
             textAnchor: "middle",
             fill: "white",
-            dominantBaseline: "baseline",
           }}
           data-testid="ticker-label"
         >
-          {
-            { pomodoro: "Work", break: "Break", longBreak: "Long Break" }[
-              clockState
-            ]
-          }
+          {{ pomodoro: "Work", break: "Break", longBreak: "Long Break" }[clockState]}
         </text>
         <text
           x="200"
