@@ -103,11 +103,6 @@ export const reducer = (state: ClockState, action: Action) => {
       return nextState
     }
     case "TOGGLE_PAUSE": {
-      // case initial start
-      if (!state.startTime) {
-        return { ...state, paused: false, startTime: Date.now() }
-      }
-
       // case switch from pause to play
       if (state.paused) {
         return { ...state, paused: false, startTime: Date.now() }
