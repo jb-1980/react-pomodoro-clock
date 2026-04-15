@@ -19,6 +19,7 @@ const { mockAudioPlay, mockAudioPause } = vi.hoisted(() => {
 })
 
 import { Clock } from "../components/Clock"
+import type { ClockState } from "../utils/definitions"
 
 describe("Pomodoro Clock", () => {
   beforeEach(() => {
@@ -130,7 +131,7 @@ describe("Pomodoro Clock", () => {
     vi.advanceTimersByTime(3000)
 
     // Time should not have changed
-    await expect.element(timeDisplay).toHaveTextContent(pausedTime!)
+    await expect.element(timeDisplay).toHaveTextContent(pausedTime)
   })
 
   test("when the timer is paused, clicking the clock resumes it", async () => {
@@ -241,7 +242,7 @@ describe("Pomodoro Clock", () => {
     vi.advanceTimersByTime(5000)
 
     // Time should not have changed
-    await expect.element(timeDisplay).toHaveTextContent(initialTime!)
+    await expect.element(timeDisplay).toHaveTextContent(initialTime)
   })
 
   test("after a full cycle of pomodoro and break, the long break should be triggered if the option is enabled", async () => {
@@ -307,7 +308,9 @@ describe("Pomodoro Clock", () => {
     await expect.element(longBreaksCheckbox).toBeChecked()
 
     // 4. Long break length
-    const longBreakLength = getByLabelText("long break length time", { exact: true })
+    const longBreakLength = getByLabelText("long break length time", {
+      exact: true,
+    })
     const longBreakIncrement = getByLabelText("Increment long break length")
 
     await longBreakIncrement.click()
@@ -315,8 +318,12 @@ describe("Pomodoro Clock", () => {
     await expect.element(longBreakLength).toHaveTextContent("16")
 
     // 5. Cycles
-    const longBreakCycles = getByLabelText("cycles between long breaks time", { exact: true })
-    const cyclesIncrement = getByLabelText("Increment cycles between long breaks")
+    const longBreakCycles = getByLabelText("cycles between long breaks time", {
+      exact: true,
+    })
+    const cyclesIncrement = getByLabelText(
+      "Increment cycles between long breaks"
+    )
 
     await cyclesIncrement.click()
     await vi.runOnlyPendingTimersAsync()
@@ -328,7 +335,10 @@ describe("Pomodoro Clock", () => {
     const storedState = localStorage.getItem("react-pomodo-clock-state")
     expect(storedState).toBeTruthy()
 
-    const parsed = JSON.parse(storedState!)
+    if (!storedState) {
+      throw new Error("Expected state to be stored in localStorage")
+    }
+    const parsed = JSON.parse(storedState) as ClockState
     expect(parsed.breakLength).toBe(4)
     expect(parsed.pomodoroLength).toBe(27)
     expect(parsed.includeLongBreaks).toBe(true)
@@ -336,7 +346,7 @@ describe("Pomodoro Clock", () => {
     expect(parsed.longBreakCycles).toBe(5)
 
     // Clean up
-    unmount()
+    await unmount()
     await vi.runOnlyPendingTimersAsync()
 
     // Second render

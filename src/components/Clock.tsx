@@ -36,7 +36,7 @@ export const Clock = () => {
       if (!paused) {
         if (time <= 0) {
           // time has run out
-          audio.play()
+          audio.play().catch((e) => console.error("Error playing audio:", e))
           dispatch({ type: "TOGGLE_CLOCK_STATE" })
         } else {
           // decrement time
@@ -61,9 +61,15 @@ export const Clock = () => {
 
   const radians = calculateRadians()
   return (
-    <section style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-      <h1 style={{ ...styles.textRancho, ...styles.titleText }}>Pomodoro Clock</h1>
-      <h2 style={{ ...styles.textGochi, textAlign: "center", margin: 0 }}>by Gilgen Labs</h2>
+    <section
+      style={{ display: "flex", flexDirection: "column", alignItems: "center" }}
+    >
+      <h1 style={{ ...styles.textRancho, ...styles.titleText }}>
+        Pomodoro Clock
+      </h1>
+      <h2 style={{ ...styles.textGochi, textAlign: "center", margin: 0 }}>
+        by Gilgen Labs
+      </h2>
       <div
         style={{
           display: "flex",

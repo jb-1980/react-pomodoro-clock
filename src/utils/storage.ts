@@ -22,7 +22,29 @@ export const retrieveState = (): ClockState => {
   }
 
   try {
-    const { breakLength, pomodoroLength, includeLongBreaks, longBreakLength, longBreakCycles } = JSON.parse(storedState)
+    const retrievedState: unknown = JSON.parse(storedState)
+
+    // validate retrieved state
+    if (typeof retrievedState !== "object" || retrievedState === null) {
+      throw new Error("Invalid state shape")
+    }
+
+    const state = retrievedState as Record<string, unknown>
+
+    if (
+      typeof state.breakLength !== "number" ||
+      typeof state.pomodoroLength !== "number" ||
+      typeof state.includeLongBreaks !== "boolean" ||
+      typeof state.longBreakCycles !== "number" ||
+      typeof state.longBreakLength !== "number"
+    ) {
+      throw new Error("Invalid state properties")
+    }
+    const breakLength = Number(state.breakLength)
+    const pomodoroLength = Number(state.pomodoroLength)
+    const includeLongBreaks = Boolean(state.includeLongBreaks)
+    const longBreakCycles = Number(state.longBreakCycles)
+    const longBreakLength = Number(state.longBreakLength)
 
     return {
       ...defaultState,
