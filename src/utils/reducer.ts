@@ -1,4 +1,10 @@
-import { BREAK, defaultState, LONGBREAK, POMODORO, type ClockState } from "./definitions"
+import {
+  BREAK,
+  defaultState,
+  LONGBREAK,
+  POMODORO,
+  type ClockState,
+} from "./definitions"
 import { persistState } from "./storage"
 
 type Action =
@@ -17,7 +23,10 @@ export const reducer = (state: ClockState, action: Action) => {
     case "TOGGLE_CLOCK_STATE": {
       switch (state.clockState) {
         case POMODORO: {
-          if (state.includeLongBreaks && state.cycle % state.longBreakCycles === 0) {
+          if (
+            state.includeLongBreaks &&
+            state.cycle % state.longBreakCycles === 0
+          ) {
             return {
               ...state,
               clockState: LONGBREAK,
