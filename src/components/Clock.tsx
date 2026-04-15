@@ -3,6 +3,7 @@ import { Ticker } from "./Ticker"
 import { Settings } from "./Settings"
 import { reducer } from "../utils/reducer"
 import { retrieveState } from "../utils/storage"
+import audioSrc from "../assets/alert.mp3"
 
 const styles = {
   textRancho: { fontFamily: "'Rancho', cursive" },
@@ -10,7 +11,7 @@ const styles = {
   titleText: { fontSize: "5em", textAlign: "center", margin: "10px 0 0 0" },
 } as const
 
-const audio = new Audio("/assets/alert.mp3")
+const audio = new Audio(audioSrc)
 
 export const Clock = () => {
   const [
