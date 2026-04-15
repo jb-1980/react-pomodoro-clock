@@ -20,7 +20,10 @@ export const Ticker = ({
   cycle,
 }: TickerProps) => {
   // noticed that when radians = 0 or 2PI the arc is not rendered, so getting it really close
-  const angle = clockState === "pomodoro" ? radians + 0.0000001 : 1.999999 * Math.PI - radians
+  const angle =
+    clockState === "pomodoro"
+      ? radians + 0.0000001
+      : 1.999999 * Math.PI - radians
   const formattedTime = formatTime(time)
 
   const longBreakArcs = []
@@ -32,7 +35,13 @@ export const Ticker = ({
       longBreakArcs.push(
         <path
           key={i}
-          d={parametizeArc(200, 200, 175, currentAngle, currentAngle + angleLength)}
+          d={parametizeArc(
+            200,
+            200,
+            175,
+            currentAngle,
+            currentAngle + angleLength
+          )}
           stroke={i + 1 >= cycle ? "#333" : "#e4e3e3"}
           strokeWidth="10"
           stroke-cap="butt"
@@ -44,7 +53,11 @@ export const Ticker = ({
     }
   }
   return (
-    <div style={{ textAlign: "center", width: 400, height: 400 }} onClick={clickHandler} data-testid="ticker">
+    <div
+      style={{ textAlign: "center", width: 400, height: 400 }}
+      onClick={clickHandler}
+      data-testid="ticker"
+    >
       <svg width="400" height="400" xmlns="http://www.w3.org/2000/svg">
         <circle cx="200" cy="200" r="200" fill="#111" fillOpacity="0.5" />
         <path
@@ -73,7 +86,11 @@ export const Ticker = ({
           }}
           data-testid="ticker-label"
         >
-          {{ pomodoro: "Work", break: "Break", longBreak: "Long Break" }[clockState]}
+          {
+            { pomodoro: "Work", break: "Break", longBreak: "Long Break" }[
+              clockState
+            ]
+          }
         </text>
         <text
           x="200"

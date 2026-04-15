@@ -20,7 +20,14 @@ export const Settings = ({
   longBreakLength,
   longBreakCycles,
   dispatch,
-}: Pick<ClockState, "breakLength" | "pomodoroLength" | "includeLongBreaks" | "longBreakLength" | "longBreakCycles"> & {
+}: Pick<
+  ClockState,
+  | "breakLength"
+  | "pomodoroLength"
+  | "includeLongBreaks"
+  | "longBreakLength"
+  | "longBreakCycles"
+> & {
   dispatch: Dispatch<Action>
 }) => {
   return (
@@ -42,7 +49,9 @@ export const Settings = ({
       <TimeToggler
         title="Session Length"
         time={pomodoroLength}
-        changeTime={(value) => dispatch({ type: "CHANGE_POMODORO_LENGTH", value })}
+        changeTime={(value) =>
+          dispatch({ type: "CHANGE_POMODORO_LENGTH", value })
+        }
       />
       <label>
         <input
@@ -57,13 +66,17 @@ export const Settings = ({
         <TimeToggler
           title="Long Break Length"
           time={longBreakLength}
-          changeTime={(value) => dispatch({ type: "CHANGE_LONG_BREAK_LENGTH", value })}
+          changeTime={(value) =>
+            dispatch({ type: "CHANGE_LONG_BREAK_LENGTH", value })
+          }
           disabled={!includeLongBreaks}
         />
         <TimeToggler
           title="Cycles between long breaks"
           time={longBreakCycles}
-          changeTime={(value) => dispatch({ type: "CHANGE_LONG_BREAK_CYCLES", value })}
+          changeTime={(value) =>
+            dispatch({ type: "CHANGE_LONG_BREAK_CYCLES", value })
+          }
           disabled={!includeLongBreaks}
         />
       </div>

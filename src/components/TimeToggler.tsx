@@ -48,7 +48,10 @@ export const TimeToggler = ({
         >
           −
         </button>
-        <span aria-label={`${normalizedTitle} time`} style={{ margin: "0 7px" }}>
+        <span
+          aria-label={`${normalizedTitle} time`}
+          style={{ margin: "0 7px" }}
+        >
           {time}
         </span>
         <button
