@@ -32,27 +32,41 @@ export const TimeToggler = ({
     >
       <h3 style={{ margin: 0, padding: "5px 13px 0 0" }}>{title}</h3>
       <div style={{ lineHeight: "1em", fontSize: "2em" }}>
-        <span
-          style={{ cursor: disabled ? "not-allowed" : "pointer" }}
-          onClick={() => (disabled ? null : changeTime(-1))}
+        <button
+          type="button"
+          style={{
+            cursor: disabled ? "not-allowed" : "pointer",
+            background: "none",
+            border: "none",
+            padding: 0,
+            font: "inherit",
+            lineHeight: "inherit",
+          }}
+          onClick={() => changeTime(-1)}
           aria-label={`Decrement ${normalizedTitle}`}
-          role="button"
-          tabIndex={disabled ? -1 : 0}
+          disabled={disabled}
         >
           −
-        </span>
+        </button>
         <span aria-label={`${normalizedTitle} time`} style={{ margin: "0 7px" }}>
           {time}
         </span>
-        <span
-          style={{ cursor: disabled ? "not-allowed" : "pointer" }}
-          onClick={() => (disabled ? null : changeTime(1))}
+        <button
+          type="button"
+          style={{
+            cursor: disabled ? "not-allowed" : "pointer",
+            background: "none",
+            border: "none",
+            padding: 0,
+            font: "inherit",
+            lineHeight: "inherit",
+          }}
+          onClick={() => changeTime(1)}
           aria-label={`Increment ${normalizedTitle}`}
-          role="button"
-          tabIndex={disabled ? -1 : 0}
+          disabled={disabled}
         >
           +
-        </span>
+        </button>
       </div>
     </div>
   )
