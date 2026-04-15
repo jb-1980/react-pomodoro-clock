@@ -115,17 +115,21 @@ export const Clock = () => {
           cycle={cycle}
         />
       )}
-      <div
+      <button
+        type="button"
         style={{
           ...styles.textRancho,
           cursor: "pointer",
           textAlign: "center",
           fontSize: "2em",
+          background: "transparent",
+          border: "none",
+          padding: 0,
         }}
         onClick={() => dispatch({ type: "RESET" })}
       >
         reset
-      </div>
+      </button>
     </section>
   )
 }
