@@ -1,4 +1,4 @@
-import { useEffect, useReducer, useState } from "react"
+import { useEffect, useReducer, useRef, useState } from "react"
 import { Ticker } from "./Ticker"
 import { Settings } from "./Settings"
 import { reducer } from "../utils/reducer"
@@ -29,23 +29,30 @@ export const Clock = () => {
   ] = useReducer(reducer, null, retrieveState)
 
   const [showSettings, setShowSettings] = useState(false)
+  const pausedRef = useRef(paused)
+  const timeRef = useRef(time)
+
+  useEffect(() => {
+    pausedRef.current = paused
+    timeRef.current = time
+  }, [paused, time])
 
   useEffect(() => {
     const intervalTime = 500
     const intervalId = setInterval(() => {
-      if (!paused) {
-        if (time <= 0) {
-          // time has run out
-          audio.play().catch((e) => console.error("Error playing audio:", e))
-          dispatch({ type: "TOGGLE_CLOCK_STATE" })
-        } else {
-          // decrement time
-          dispatch({ type: "DECREMENT_TIME" })
-        }
+      if (pausedRef.current) return
+
+      if (timeRef.current <= 0) {
+        // time has run out
+        void audio.play().catch((e) => console.error("Error playing audio:", e))
+        dispatch({ type: "TOGGLE_CLOCK_STATE" })
+      } else {
+        // decrement time
+        dispatch({ type: "DECREMENT_TIME" })
       }
     }, intervalTime)
     return () => clearInterval(intervalId)
-  }, [paused, time])
+  }, [dispatch])
 
   const calculateRadians = () => {
     const totalTime =
