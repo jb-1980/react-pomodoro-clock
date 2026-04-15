@@ -2,20 +2,32 @@ import { expect, test, describe, beforeEach, vi } from "vitest"
 import { render } from "vitest-browser-react"
 
 // Mock Audio in a hoisted block to ensure it runs before any imports
-const { mockAudioPlay, mockAudioPause } = vi.hoisted(() => {
+const { mockAudioPlay, mockAudioPause, getAudioSrc } = vi.hoisted(() => {
   const mockPlay = vi.fn().mockResolvedValue(undefined)
   const mockPause = vi.fn()
+  let capturedSrc = ""
 
   class MockAudio {
     play = mockPlay
     pause = mockPause
     src = ""
     load = vi.fn()
+
+    constructor(src?: string) {
+      if (src) {
+        this.src = src
+        capturedSrc = src
+      }
+    }
   }
 
   globalThis.Audio = MockAudio as unknown as typeof Audio
 
-  return { mockAudioPlay: mockPlay, mockAudioPause: mockPause }
+  return {
+    mockAudioPlay: mockPlay,
+    mockAudioPause: mockPause,
+    getAudioSrc: () => capturedSrc,
+  }
 })
 
 import { Clock } from "../components/Clock"
@@ -396,5 +408,35 @@ describe("Pomodoro Clock", () => {
 
     // Should trigger another long break
     await expect.element(label).toHaveTextContent("Long Break")
+  })
+
+  test("the audio source should be correctly set to the alert sound file", async () => {
+    await render(<Clock />)
+
+    // Verify that the Audio constructor was called with the correct source
+    const audioSrc = getAudioSrc()
+    expect(audioSrc).toBeTruthy()
+    expect(audioSrc).toMatch(/alert\.mp3$/)
+  })
+
+  test("when timer completes, audio should play with the correct source", async () => {
+    const { getByTestId } = await render(<Clock />)
+
+    // Verify audio source is set
+    const audioSrc = getAudioSrc()
+    expect(audioSrc).toMatch(/alert\.mp3$/)
+
+    const ticker = getByTestId("ticker")
+    const label = getByTestId("ticker-label")
+
+    // Start and complete a pomodoro
+    await ticker.click()
+    vi.advanceTimersByTime(25 * 60 * 1000 + 500)
+
+    // Wait for the mode to switch (ensures audio.play() has been called)
+    await expect.element(label).toHaveTextContent("Break")
+
+    // Audio should have been played
+    expect(mockAudioPlay).toHaveBeenCalledTimes(1)
   })
 })
