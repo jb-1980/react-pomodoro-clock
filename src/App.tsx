@@ -1,7 +1,4 @@
-import React from "react"
-import { render } from "react-dom"
-import { Clock } from "./Clock"
-import * as serviceWorker from "./serviceWorker"
+import { Clock } from "./components/Clock"
 
 const styles = {
   display: "flex",
@@ -21,6 +18,4 @@ const App = () => (
   </div>
 )
 
-render(<App />, document.getElementById("root"))
-
-serviceWorker.register()
+export default App

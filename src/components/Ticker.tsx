@@ -1,8 +1,16 @@
-import React from "react"
+import { parametizeArc, formatTime } from "../utils/lib"
 
-import { parametizeArc, formatTime } from "./lib"
+type TickerProps = {
+  radians: number
+  clockState: string
+  time: number
+  clickHandler: () => void
+  includeLongBreaks: boolean
+  longBreakCycles: number
+  cycle: number
+}
 
-export default ({
+export const Ticker = ({
   radians,
   clockState,
   time,
@@ -10,7 +18,7 @@ export default ({
   includeLongBreaks,
   longBreakCycles,
   cycle,
-}) => {
+}: TickerProps) => {
   // noticed that when radians = 0 or 2PI the arc is not rendered, so getting it really close
   const angle =
     clockState === "pomodoro"
@@ -20,9 +28,9 @@ export default ({
 
   const longBreakArcs = []
   if (includeLongBreaks) {
-    let spaceAngle = (2.5 * Math.PI) / 180
+    const spaceAngle = (2.5 * Math.PI) / 180
     let currentAngle = spaceAngle / 2
-    let angleLength = (2 * Math.PI) / longBreakCycles - spaceAngle
+    const angleLength = (2 * Math.PI) / longBreakCycles - spaceAngle
     for (let i = 0; i < longBreakCycles; i += 1) {
       longBreakArcs.push(
         <path
@@ -75,7 +83,6 @@ export default ({
             fontSize: "4em",
             textAnchor: "middle",
             fill: "white",
-            dominantBaseline: "baseline",
           }}
           data-testid="ticker-label"
         >
