@@ -21,15 +21,20 @@ export const retrieveState = (): ClockState => {
     return defaultState
   }
 
-  const { breakLength, pomodoroLength, includeLongBreaks, longBreakLength, longBreakCycles } = JSON.parse(storedState)
+  try {
+    const { breakLength, pomodoroLength, includeLongBreaks, longBreakLength, longBreakCycles } = JSON.parse(storedState)
 
-  return {
-    ...defaultState,
-    breakLength,
-    pomodoroLength,
-    includeLongBreaks,
-    longBreakLength,
-    longBreakCycles,
-    time: pomodoroLength * 60000,
+    return {
+      ...defaultState,
+      breakLength,
+      pomodoroLength,
+      includeLongBreaks,
+      longBreakLength,
+      longBreakCycles,
+      time: pomodoroLength * 60000,
+    }
+  } catch {
+    localStorage.removeItem(storageKey)
+    return defaultState
   }
 }
